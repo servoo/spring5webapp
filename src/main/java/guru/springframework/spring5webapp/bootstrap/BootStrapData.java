@@ -1,7 +1,5 @@
 package guru.springframework.spring5webapp.bootstrap;
 
-import java.util.List;
-
 import guru.springframework.spring5webapp.domain.Author;
 import guru.springframework.spring5webapp.domain.Book;
 import guru.springframework.spring5webapp.domain.Publisher;
@@ -44,36 +42,57 @@ public class BootStrapData implements CommandLineRunner {
 	 * This comes forth from the CommandLineRunner and is used to run the bean?
 	 */
 	@Override
-	public void run(final String... args) throws Exception {
+	public void run(String... args) throws Exception {
+
+		System.out.println("Started in Bootstrap");
+
+		Publisher publisher = new Publisher();
+		publisher.setName("SFG Publishing");
+		publisher.setCity("St Petersburg");
+		publisher.setState("FL");
+
+		/**
+		 * If I save publisher AFTER ddd.setPublisher(publisher), Spring throws an error because we (object) are (is) referencing an unsaved transient instance.
+		 * Why is this?
+		 *
+		 * (https://stackoverflow.com/questions/2302802/how-to-fix-the-hibernate-object-references-an-unsaved-transient-instance-save)
+		 * In this post, it is said that this could be circumvented if you used cascade = {CascadeType.ALL} on the parents reference to the child
+		 * so that the parent/ child is saved as well (at the same time?).
+		 *
+		 * So I've learned that the order in which instances are saved to the DB really matters and that there are options for cascading and such. I should take a further look
+		 * into this matter.
+		 *
+		 * Also, what is flushing? Because the error stated that the instances should be saved before 'flushing' occurs.
+		 */
+		publisherRepository.save(publisher);
+
+		System.out.println("Publisher Count: " + publisherRepository.count());
 
 		Author eric = new Author("Eric", "Evans");
 		Book ddd = new Book("Domain Driven Design", "123123");
 		eric.getBooks().add(ddd);
 		ddd.getAuthors().add(eric);
 
+		ddd.setPublisher(publisher);
+		publisher.getBooks().add(ddd);
+
 		authorRepository.save(eric);
 		bookRepository.save(ddd);
+		publisherRepository.save(publisher);
 
 		Author rod = new Author("Rod", "Johnson");
-		Book noEJB = new Book("J2EE Development without EJB", "321321");
+		Book noEJB = new Book("J2EE Development without EJB", "3939459459");
 		rod.getBooks().add(noEJB);
 		noEJB.getAuthors().add(rod);
 
+		noEJB.setPublisher(publisher);
+		publisher.getBooks().add(noEJB);
+
 		authorRepository.save(rod);
 		bookRepository.save(noEJB);
+		publisherRepository.save(publisher);
 
-		Publisher awesomePublisher = new Publisher(
-				"awesomePublisher!", "addressLineeee", "citay", "staty", "zippie"
-		);
-		Publisher awesomePublisher2 = new Publisher(
-				"Henkiepublisherrr!", "adresje", "asdfasdf", "c234c", "zippieasc3c43"
-		);
-
-		publisherRepository.save(awesomePublisher);
-		publisherRepository.save(awesomePublisher2);
-
-		System.out.println("Started in Bootstrap");
-		System.out.println("Number of books: " + bookRepository.count());
-		publisherRepository.findAll().forEach(publisher -> System.out.println(publisher.getName()));
+		System.out.println("Number of Books: " + bookRepository.count());
+		System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
 	}
 }

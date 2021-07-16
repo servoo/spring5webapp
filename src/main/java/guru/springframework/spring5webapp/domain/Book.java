@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -20,6 +21,9 @@ public class Book {
 
 	private String title;
 	private String isbn;
+
+	@ManyToOne
+	private Publisher publisher;
 
 	/**
 	 * Here we set the joinTable on the 'inverse side' of the relationship (owned side). This will hold records from both tables in one
@@ -36,6 +40,14 @@ public class Book {
 	public Book(final String title, final String isbn) {
 		this.title = title;
 		this.isbn = isbn;
+	}
+
+	public Publisher getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(final Publisher publisher) {
+		this.publisher = publisher;
 	}
 
 	public Long getId() {

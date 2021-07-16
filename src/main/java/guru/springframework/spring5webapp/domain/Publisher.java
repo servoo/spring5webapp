@@ -1,9 +1,14 @@
 package guru.springframework.spring5webapp.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Publisher {
@@ -18,6 +23,14 @@ public class Publisher {
 	private String state;
 	private String zip;
 
+	/**
+	 * The JoinColumn(name = ...) is used as a mapping and will create a foreign key for us. The publisher_id will be used
+	 * to track down a book for example and vice versa.
+	 */
+	@OneToMany
+	@JoinColumn(name = "publisher_id")
+	private Set<Book> books = new HashSet<>();
+
 	public Publisher() {
 	}
 
@@ -27,6 +40,14 @@ public class Publisher {
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
+	}
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(final Set<Book> books) {
+		this.books = books;
 	}
 
 	public Long getId() {
