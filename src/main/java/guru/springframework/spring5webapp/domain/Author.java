@@ -1,5 +1,6 @@
 package guru.springframework.spring5webapp.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -40,17 +41,18 @@ public class Author {
 	 *
 	 * A 'mappedBy' needs to be used on the 'owning' side of the relationship, if this is bidirectional you can choose on what side
 	 * it is used. Here it is more 'logical' to do this on the author in stead of on the book.
+	 *
+	 * Read about listTypes! Why HashSet? Why different than array?
 	 */
 	@ManyToMany(mappedBy = "authors")
-	private Set<Book> books;
+	private Set<Book> books = new HashSet<>();
 
 	public Author() {
 	}
 
-	public Author(final String firstName, final String lastName, final Set<Book> books) {
+	public Author(final String firstName, final String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.books = books;
 	}
 
 	public Long getId() {
