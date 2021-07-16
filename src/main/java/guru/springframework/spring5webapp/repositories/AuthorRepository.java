@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Why do we add <Author, Long>  after the extends CrudRepository?
  * Why do we extend CrudRepository?
- * What is '<>' ?
+ * What is '<>' and the params, why do we need it?
  */
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Long> {
