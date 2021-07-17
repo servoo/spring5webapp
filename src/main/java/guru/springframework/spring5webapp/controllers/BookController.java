@@ -15,7 +15,8 @@ public class BookController {
 	}
 
 	/**
-	 * why Model? What does this do?
+	 * why Model? What does this do? How does this parameter get passed to the method?
+	 * Is this given by the client? (Is this the DOM?)
 	 */
 	@RequestMapping("/books")
 	public String getBooks(Model model) {
@@ -25,6 +26,6 @@ public class BookController {
 		 */
 		model.addAttribute("books", bookRepository.findAll());
 
-		return "books";
+		return "books/list";
 	}
 }
