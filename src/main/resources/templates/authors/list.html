@@ -12,11 +12,13 @@
         <th>ID</th>
         <th>First name</th>
         <th>Last name</th>
+        <th>Number of books published</th>
     </tr>
     <tr th:each="author : ${authors}">
         <td th:text="${author.id}"></td>
         <td th:text="${author.firstName}"></td>
         <td th:text="${author.lastName}"></td>
+        <td th:text="${author.books.size()}"></td>
     </tr>
 </table>
 

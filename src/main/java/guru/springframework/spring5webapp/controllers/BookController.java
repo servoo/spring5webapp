@@ -5,6 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ *  The @Controller will tell Spring that this class should be in the Spring context.
+ *
+ *  But what I don't get is, what exactly happens.
+ *
+ *  I've found that the @Controller annotation is used so that the 'Dispatcher Servlet'
+ *  will use this class to look for a path for the given request, i.e. "/books" in this case.
+ */
 @Controller
 public class BookController {
 
